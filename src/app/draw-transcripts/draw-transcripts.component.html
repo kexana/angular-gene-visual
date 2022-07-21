@@ -1,0 +1,16 @@
+<h2>gene</h2>
+<button type="button" (click)="switchData()">
+  Switch
+</button>
+<div>
+  <table style="width: 10%;">
+    <tr *ngFor="let transcript of data.transcripts">
+      <td>
+        {{transcript.transcript_id}}
+      </td>
+      <td style="padding:0px">
+        <app-transcript-canvas [transcript]="transcript"></app-transcript-canvas>
+      </td>
+    </tr>
+   </table>
+</div>

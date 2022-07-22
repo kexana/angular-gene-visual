@@ -33,20 +33,15 @@ export class TranscriptCanvasComponent implements AfterViewInit {
   private exonScale = 0;
   
   private startOffset = 0;
-  private scaleCoeficient = 27800000;
-
-  private j = 0;
 
   DrawTranscript(): void {
     this.context.canvas.width = window.innerWidth - 150;
     this.startOffset = this.transcript.cds[0].start-1000;
-    this.exonScale = this.context.canvas.width / this.globalScale * ((this.startOffset+1000) / this.scaleCoeficient);
-    console.log(this.globalScale);
+    this.exonScale = this.context.canvas.width / (this.globalScale*1.1);
 
     this.context.fillRect(0, this.context.canvas.height / 2 - this.intronWidth / 2, this.context.canvas.width, this.intronWidth);
     for (let i = 0; i < this.transcript.exons.length; i++) {
       this.context.fillRect((this.transcript.exons[i].start - this.startOffset) * this.exonScale, this.context.canvas.height / 2 - this.exonWidth / 2, (this.transcript.exons[i].stop - this.transcript.exons[i].start) * this.exonScale, this.exonWidth);
-      console.log((this.transcript.exons[i].stop - this.transcript.exons[i].start) * this.exonScale);
     }
   }
 }

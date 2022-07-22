@@ -46,15 +46,14 @@ export class DataService {
     } else {
       this.currentDataIndex = 0;
     }
+    this.max = 0;
   }
   private max: number=0;
   public getScale(): number{
-    for (let i = 0; i < this.dataEntries.length; i++) {
-      for (let j = 0; j < this.dataEntries[i].transcripts.length; j++) {
-        if (this.max < this.dataEntries[i].transcripts[j].cds[0].stop - this.dataEntries[i].transcripts[j].cds[0].start) {
-          this.max = this.dataEntries[i].transcripts[j].cds[0].stop - this.dataEntries[i].transcripts[j].cds[0].start
+    for (let j = 0; j < this.dataEntries[this.currentDataIndex].transcripts.length; j++) {
+      if (this.max < this.dataEntries[this.currentDataIndex].transcripts[j].cds[0].stop - this.dataEntries[this.currentDataIndex].transcripts[j].cds[0].start) {
+        this.max = this.dataEntries[this.currentDataIndex].transcripts[j].cds[0].stop - this.dataEntries[this.currentDataIndex].transcripts[j].cds[0].start
         }
-      }
     }
     return this.max;
   }

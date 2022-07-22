@@ -1,6 +1,9 @@
 h1, h2, button {
   font-family: Excelorate;
   text-align:center;
+  background-color:rgb(116 71 131 / 0.60);
+  padding:20px 10px;
+  border-radius:50px;
 }
 label{
     font-family:yagiza

@@ -2,9 +2,11 @@
   <label for="gene-name">Gene Name - </label>
   <label id="gene-name">{{data.gene}}</label>
 </h2>
+<div style="transform: translate(41%,0%);">
   <button type="button" (click)="switchData()">
     Switch
-</button>
+  </button>
+</div>
 <div>
   <table>
     <tr *ngFor="let transcript of data.transcripts">

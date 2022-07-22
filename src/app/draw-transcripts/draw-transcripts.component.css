@@ -8,4 +8,24 @@ td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 30px;
+  font-family:'OCR A';
 }
+
+button {
+  padding: 16px 100px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  transition-duration: 0.2s;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  border: 2px solid #9a1e73;
+  border-radius: 10px;
+}
+  button:hover {
+    background-color: #9a1e73;
+    color: white;
+  }

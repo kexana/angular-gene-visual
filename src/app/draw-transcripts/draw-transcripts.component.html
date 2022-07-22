@@ -1,15 +1,18 @@
-<h2>gene</h2>
-<button type="button" (click)="switchData()">
-  Switch
+<h2>
+  <label for="gene-name">Gene Name - </label>
+  <label id="gene-name">{{data.gene}}</label>
+</h2>
+  <button type="button" (click)="switchData()">
+    Switch
 </button>
 <div>
-  <table style="width: 10%;">
+  <table>
     <tr *ngFor="let transcript of data.transcripts">
-      <td>
+      <td style="padding:5px">
         {{transcript.transcript_id}}
       </td>
       <td style="padding:0px">
-        <app-transcript-canvas [transcript]="transcript"></app-transcript-canvas>
+        <app-transcript-canvas [transcript]="transcript" [scale]="this.scale"></app-transcript-canvas>
       </td>
     </tr>
    </table>

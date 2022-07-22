@@ -47,4 +47,15 @@ export class DataService {
       this.currentDataIndex = 0;
     }
   }
+  private max: number=0;
+  public getScale(): number{
+    for (let i = 0; i < this.dataEntries.length; i++) {
+      for (let j = 0; j < this.dataEntries[i].transcripts.length; j++) {
+        if (this.max < this.dataEntries[i].transcripts[j].cds[0].stop - this.dataEntries[i].transcripts[j].cds[0].start) {
+          this.max = this.dataEntries[i].transcripts[j].cds[0].stop - this.dataEntries[i].transcripts[j].cds[0].start
+        }
+      }
+    }
+    return this.max;
+  }
 }

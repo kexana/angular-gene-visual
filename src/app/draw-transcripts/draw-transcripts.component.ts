@@ -12,12 +12,16 @@ export class DrawTranscriptsComponent implements OnInit {
 
   public data: geneData = this.dataService.getDataContents();
 
+  public scale: number = 0;
+
   ngOnInit(): void {
+    this.scale=this.dataService.getScale();
   }
 
   switchData(): void {
     this.dataService.switchData();
     this.data = this.dataService.getDataContents();
+    this.scale = this.dataService.getScale();
   }
 
 }

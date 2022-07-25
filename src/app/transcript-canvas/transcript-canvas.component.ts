@@ -44,10 +44,10 @@ export class TranscriptCanvasComponent implements AfterViewInit {
       this.startOffset = this.transcript.utr3[0].start - 1500;
       this.signMultiplier = 1;
     } else {
-      this.startOffset = this.transcript.utr5[0].start - 1500;
+      this.startOffset = this.transcript.utr5[0].start - (1500 + this.transcript.utr3.length * 1000);
       this.signMultiplier = -1;
     }
-    this.exonScale = this.context.canvas.width / (this.globalScale*1.1);
+    this.exonScale = this.context.canvas.width / ((this.globalScale + this.transcript.utr5.length*1000) * 1.1);
 
     this.context.fillRect(0, this.context.canvas.height / 2 - this.intronWidth / 2, this.context.canvas.width, this.intronWidth);
     for (let i = 0; i < this.transcript.exons.length; i++) {
@@ -58,9 +58,10 @@ export class TranscriptCanvasComponent implements AfterViewInit {
       this.context.fillStyle = "#9a1e73";
       this.context.fillRect((this.transcript.utr3[i].start - this.startOffset - (this.transcript.utr3[i].stop - this.transcript.utr3[i].start) * this.signMultiplier) * this.exonScale, this.context.canvas.height / 2 - this.utrWidth / 2, (this.transcript.utr3[i].stop - this.transcript.utr3[i].start) * this.exonScale, this.utrWidth);
     }
-    for (let i = 0; i < this.transcript.utr5.length; i++) {
+    for (let i = this.transcript.utr5.length - 1; i > -1; i--) {
       this.context.fillStyle = "#9a1e73";
-      this.context.fillRect((this.transcript.utr5[i].start - this.startOffset + (this.transcript.utr5[i].stop - this.transcript.utr5[i].start) * this.signMultiplier) * this.exonScale, this.context.canvas.height / 2 - this.utrWidth / 2, (this.transcript.utr5[i].stop - this.transcript.utr5[i].start) * this.exonScale, this.utrWidth);
+      let utr5Offset = -2*((this.transcript.utr5.length - 1 - i) * ((this.transcript.exons[this.transcript.exons.length - 1 - i-1].stop - this.transcript.exons[this.transcript.exons.length - 1 - i].stop) * this.exonScale));
+      this.context.fillRect(utr5Offset + (this.transcript.utr5[i].start - this.startOffset + (this.transcript.utr5[i].stop - this.transcript.utr5[i].start) * this.signMultiplier) * this.exonScale, this.context.canvas.height / 2 - this.utrWidth / 2, (this.transcript.utr5[i].stop - this.transcript.utr5[i].start) * this.exonScale, this.utrWidth);
     }
   }
 }

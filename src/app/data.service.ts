@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import Diablo from '../resources/DIABLO.json';
 import Phex from '../resources/PHEX.json';
+import { Observable, of } from 'rxjs';
 
 export interface node {
   start: number;
@@ -28,33 +29,72 @@ export class DataService {
 
   private dataEntries: geneData[];
 
+  public dataEntryNames: String[];
+
   private currentDataIndex: number;
 
   constructor() {
     this.dataEntries = [];
+    this.dataEntryNames = [];
     this.dataEntries.push(Diablo);
     this.dataEntries.push(Phex);
+    for (let i = 0; i < this.dataEntries.length; i++) {
+      this.dataEntryNames.push(this.dataEntries[i].gene);
+    }
     this.currentDataIndex = 1;
   }
 
-  public getDataContents(): geneData{
-    return this.dataEntries[this.currentDataIndex];
+  public getDataContents(): Observable<geneData>{
+    return of(this.dataEntries[this.currentDataIndex]);
   }
-  public switchData(): void {
-    if (this.currentDataIndex < this.dataEntries.length-1 ) {
-      this.currentDataIndex += 1;
-    } else {
-      this.currentDataIndex = 0;
+  public switchData(name: string): void {
+    for (let i = 0; i < this.dataEntries.length; i++) {
+      if (this.dataEntries[i].gene == name) {
+        this.currentDataIndex = i;
+        break;
+      }
     }
-    this.max = 0;
   }
-  private max: number=0;
   public getScale(): number{
-    for (let j = 0; j < this.dataEntries[this.currentDataIndex].transcripts.length; j++) {
-      if (this.max < this.dataEntries[this.currentDataIndex].transcripts[j].cds[0].stop - this.dataEntries[this.currentDataIndex].transcripts[j].cds[0].start) {
-        this.max = this.dataEntries[this.currentDataIndex].transcripts[j].cds[0].stop - this.dataEntries[this.currentDataIndex].transcripts[j].cds[0].start
-        }
+    let max = 0;
+    let reverse = true;
+
+    if (this.dataEntries[this.currentDataIndex].transcripts[0].utr3[0].start < this.dataEntries[this.currentDataIndex].transcripts[0].utr5[0].stop) {
+      reverse = false;
     }
-    return this.max;
+    for (let j = 0; j < this.dataEntries[this.currentDataIndex].transcripts.length; j++) {
+      if (reverse) {
+        if (max < Math.abs(
+
+          this.dataEntries[this.currentDataIndex].transcripts[j].utr3[
+            this.dataEntries[this.currentDataIndex].transcripts[j].utr3.length - 1].stop
+          - this.dataEntries[this.currentDataIndex].transcripts[j].utr5[0].start)
+
+        ) {
+
+          max = Math.abs(this.dataEntries[this.currentDataIndex].transcripts[j].utr3[
+            this.dataEntries[this.currentDataIndex].transcripts[j].utr3.length - 1].stop
+            - this.dataEntries[this.currentDataIndex].transcripts[j].utr5[0].start);
+
+        }
+      } else {
+        if (max < Math.abs(
+
+          this.dataEntries[this.currentDataIndex].transcripts[j].utr5[
+            this.dataEntries[this.currentDataIndex].transcripts[j].utr5.length - 1].stop
+          - this.dataEntries[this.currentDataIndex].transcripts[j].utr3[0].start)
+
+        ) {
+
+          max = Math.abs(this.dataEntries[this.currentDataIndex].transcripts[j].utr5[
+            this.dataEntries[this.currentDataIndex].transcripts[j].utr5.length - 1].stop
+            - this.dataEntries[this.currentDataIndex].transcripts[j].utr3[0].start);
+
+        }
+      }
+    }
+    console.log(max);
+    console.log(reverse);
+    return max;
   }
 }

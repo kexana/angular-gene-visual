@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService, geneData } from '../data.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-draw-transcripts',
@@ -7,20 +8,28 @@ import { DataService, geneData } from '../data.service';
   styleUrls: ['./draw-transcripts.component.css']
 })
 export class DrawTranscriptsComponent implements OnInit {
-
-  constructor(private dataService: DataService) { }
-
-  public data: geneData = this.dataService.getDataContents();
+  
+  public data: geneData;
 
   public scale: number = 0;
 
-  ngOnInit(): void {
-    this.scale=this.dataService.getScale();
+  constructor(public dataService: DataService) {
+    this.data = {} as geneData;
   }
 
-  switchData(): void {
-    this.dataService.switchData();
-    this.data = this.dataService.getDataContents();
+  ngOnInit(): void {
+    this.scale = this.dataService.getScale();
+    this.linkData();
+  }
+
+
+  linkData(): void {
+    this.dataService.getDataContents().subscribe(data => this.data = data);
+  }
+
+  switchData(name: string): void {
+    this.dataService.switchData(name);
+    this.linkData();
     this.scale = this.dataService.getScale();
   }
 

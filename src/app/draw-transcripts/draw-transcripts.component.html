@@ -9,9 +9,9 @@
     </button>
     <div class="dropdown-content">
       <li *ngFor="let name of this.dataService.dataEntryNames" style="list-style-type: none; display: flex; justify-content: center; ">
-        <button type="button" (click)="switchData(name.toString())">
+        <a routerLink="/{{name}}">
           {{name}}
-        </button>
+        </a>
       </li>
     </div>
   </div>
@@ -26,5 +26,5 @@
         <app-transcript-canvas [transcript]="transcript" [scale]="this.scale"></app-transcript-canvas>
       </td>
     </tr>
-   </table>
+  </table>
 </div>
